@@ -49,10 +49,25 @@ export default function AuthPage() {
       // Route directly to your primary dashboard interface
       router.push("/dashboard");
     } catch (error: any) {
-      console.error(error);
+      console.error("Auth error:", error);
+      
+      let errorMessage = "Authentication failed. Please try again.";
+      
+      if (error.response?.status === 401) {
+        errorMessage = "Invalid email or password. Please check your credentials.";
+      } else if (error.response?.status === 400) {
+        errorMessage = error.response?.data?.detail || "Invalid request. Please check your input.";
+      } else if (error.response?.status === 500) {
+        errorMessage = "Server error. Please try again later.";
+      } else if (!error.response) {
+        errorMessage = "Cannot connect to server. Is the backend running?";
+      } else {
+        errorMessage = error.response?.data?.detail || errorMessage;
+      }
+      
       setAlert({
         type: "error",
-        message: error.response?.data?.detail || "Authentication sequence failed. Check server synchronization.",
+        message: errorMessage,
       });
     } finally {
       setIsLoading(false);
