@@ -16,7 +16,7 @@ router = APIRouter(
 @router.get("/")
 def get_workspaces(db: Session = Depends(get_db), user_id: int = Depends(get_current_user)):
     workspaces = get_workspace(db, user_id)
-    return [{"id": w.id, "name": w.name, "owner_id": w.owner_id} for w in workspaces]
+    return [{"id": w.id, "name": w.name, "description": w.description, "owner_id": w.owner_id} for w in workspaces]
 
 
 @router.post("/")
@@ -24,6 +24,7 @@ def create_new_workspace(payload: WorkspaceCreate, db: Session = Depends(get_db)
     workspace = create_workspace(
         db,
         payload.name,
+        payload.description,
         user_id
     )
-    return {"id": workspace.id, "name": workspace.name, "owner_id": workspace.owner_id}
+    return {"id": workspace.id, "name": workspace.name, "description": workspace.description, "owner_id": workspace.owner_id}

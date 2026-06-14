@@ -2,8 +2,10 @@ from fastapi import FastAPI
 from db.database import Base
 from db.database import engine
 from router.auth import router as auth_router
+from router.project import router as project_router
 from fastapi.middleware.cors import CORSMiddleware
 from router.workspace import router as workspace_router
+from router.task import router as task_router
 
 Base.metadata.create_all(bind=engine)
 
@@ -21,3 +23,5 @@ app.add_middleware(
 
 app.include_router(auth_router)
 app.include_router(workspace_router)
+app.include_router(project_router)
+app.include_router(task_router)

@@ -1,9 +1,10 @@
 from sqlalchemy.orm import Session
 from models.workspace import Workspace
 
-def create_workspace(db: Session, name: str, owner_id: int):
+def create_workspace(db: Session, name: str, description: str | None, owner_id: int):
     workspace = Workspace(
         name=name,
+        description=description,
         owner_id=owner_id
     )
     db.add(workspace)
